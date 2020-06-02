@@ -10,6 +10,7 @@ public with sharing class FSIT_CalloutUtilityTestDataFactory {
         Global_Variable__c lmsAccountMergeIntegrationMethod = new Global_Variable__c(Name='LMS.AccountMergeIntegration.Method', Value__c='POST',ACAMS_Migrated__c=false);
         Global_Variable__c lmsAccountMergeIntegrationTimeout = new Global_Variable__c(Name='LMS.AccountMergeIntegration.TimeOut', Value__c='120000',ACAMS_Migrated__c=false);
         Global_Variable__c lmsAppServer = new Global_Variable__c(Name='LMS.APP.Server', Value__c='https://lmsacams-qa.becker.com',ACAMS_Migrated__c=true);
+        Global_Variable__c lmsUserInegrationMethod = new Global_Variable__c(Name='LMS.UserIntegration.Method', Value__c='POST',ACAMS_Migrated__c=true);
         
         Global_Variable__c lmsEnrlmtMergeIntegrationEndPoint = new Global_Variable__c(Name='LMS.EnrlmntMergeIntegration.Endpoint', Value__c='/integration/users/merge/subscriptions/{0}');
         Global_Variable__c lmsEnrollmentIntegrationCMethod = new Global_Variable__c(Name='LMS.EnrollmentIntegration.C.Method', Value__c='POST');
@@ -18,6 +19,11 @@ public with sharing class FSIT_CalloutUtilityTestDataFactory {
         Global_Variable__c lmsEnrollmentIntegrationUMethod = new Global_Variable__c(Name='LMS.EnrollmentIntegration.U.Method', Value__c='PUT');
         Global_Variable__c lmsSecretKey = new Global_Variable__c(Name='LMS.SecretKey', Value__c='prdMMjNcXVAcmLXKyV2NceFfSS7BuZwNCzZ59446tnBcxGjJ2uK8aHvLcCf4KZAJGGwh7HgLrhgpepaKpXpM7g4jjr7FWLyWUV7muCmSntD6RyAh6ajLUC6VQs3PdwqnLpZ');
         Global_Variable__c lmsServer = new Global_Variable__c(Name='LMS.Server', Value__c='https://lmsacams-api.becker.com');    
+        Global_Variable__c lmsUserInterationTimeout = new Global_Variable__c(Name='LMS.UserIntegration.TimeOut', Value__c='120000');
+        Global_Variable__c lmsUserIntegrationEndPoint = new Global_Variable__c(Name='LMS.UserIntegration.Endpoint', Value__c='/integration/user/{0}');
+        Global_Variable__c lmsWebinarIntegrationTimeOut = new Global_Variable__c(Name='LMS.WebinarIntegration.TimeOut', Value__c='12000');
+        Global_Variable__c lmsWebinarIntegrationEndPoint = new Global_Variable__c(Name='LMS.WebinarIntegration.Endpoint', Value__c='/integration/enrollments/status/{0}');
+        Global_Variable__c lmsWebinarIntegrationStartDate = new Global_Variable__c(Name='LMS.WebinarIntegration.StartDate', Value__c='2020-06-02T17:59:54Z');
         
         globalRecords.add(lmsAccountMergeIntegrationEndpoint);
         globalRecords.add(lmsAccountMergeIntegrationMethod);
@@ -30,14 +36,21 @@ public with sharing class FSIT_CalloutUtilityTestDataFactory {
         globalRecords.add(lmsEnrollmentIntegrationUMethod);
         globalRecords.add(lmsSecretKey);
         globalRecords.add(lmsServer);
-        
+        globalRecords.add(lmsUserInegrationMethod);
+        globalRecords.add(lmsUserInterationTimeout);
+        globalRecords.add(lmsUserIntegrationEndPoint);
+        globalRecords.add(lmsWebinarIntegrationTimeOut);
+        globalRecords.add(lmsWebinarIntegrationEndPoint);
+        globalRecords.add(lmsWebinarIntegrationStartDate);
         return globalRecords;
     }
 
     public static List<Contact> createContactRecord(){
         List<Contact> cList = new List<Contact>();
         Contact c = new Contact();
+        c.Email = 'test@contactemail.com';
         c.LastName = 'Contact Last Name';
+        c.firstName = 'test Contact First';
         cList.add(c);
         return cList;
     }
@@ -70,5 +83,27 @@ public with sharing class FSIT_CalloutUtilityTestDataFactory {
 
         uList.add(u);
         return uList;
+    }
+
+    public static List<BeckerLMS_Enrollment__c> createBeckLMSEnrollmentRecords(Integer num){
+        List<BeckerLMS_Enrollment__c> beckLMSEnrollmentRecords = new List<BeckerLMS_Enrollment__c>();
+        for(Integer i=0; i < num; i++){
+            BeckerLMS_Enrollment__c beckerLMS = new BeckerLMS_Enrollment__c();
+            beckerLMS.Status__c = 'Enrolled';
+            beckLMSEnrollmentRecords.add(beckerLMS);
+        }
+        return beckLMSEnrollmentRecords;
+    }
+
+    public static List<Asset> createAssetList(Integer num){
+        List<Asset> assetList = new List<Asset>();
+        for(Integer i=0; i < num; i++){
+            Asset a = new Asset();
+            a.Name='Memberships';
+            a.Status__c = 'Active';
+            a.CurrentExpirationDate__c = Date.today().addDays(-1);
+            assetList.add(a);
+        }
+        return assetList;
     }
 }

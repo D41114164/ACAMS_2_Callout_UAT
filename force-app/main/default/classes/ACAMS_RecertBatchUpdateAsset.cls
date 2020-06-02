@@ -40,7 +40,7 @@ global class ACAMS_RecertBatchUpdateAsset implements Database.Batchable<sObject>
             }
         }
         System.debug('conAssetsMap: '+conAssetsMap);
-        if(!conAssetsMap.isEmpty() && !certAppConIDMap.isEmpty())    {
+        if(!conAssetsMap.isEmpty() && !certAppConIDMap.isEmpty()){
             for(Recertification_Application__c certApp : certAppConIDMap.keySet())    {
                 if(conAssetsMap.containsKey(certApp.Contact__c) && conAssetsMap.get(certApp.Contact__c).size()>0)   {
                     System.debug('conAssetsMap.get(certApp.Contact__c) : '+conAssetsMap.get(certApp.Contact__c));
@@ -74,7 +74,7 @@ global class ACAMS_RecertBatchUpdateAsset implements Database.Batchable<sObject>
             update certAppLstUpdt;
         }
         
-         System.debug('after astLstUpdt: '+astLstUpdt);
+        System.debug('after astLstUpdt: '+astLstUpdt);
         System.debug('after certAppLstUpdt: '+certAppLstUpdt);
         
    }

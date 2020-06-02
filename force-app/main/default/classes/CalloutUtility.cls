@@ -80,72 +80,6 @@ public class CalloutUtility {
         }
     }
     
-     @Future(callout=true)
-    public static void SendRequestMerge(String serviceName, Boolean SHASignature, String json_string,String masterIDmerge, String cntIDmerge, String usernamemerge) {
-       
-        try{
-            Map<String, Global_Variable__c> global_variableMap = Global_Variable__c.getAll();
-            HttpRequest req = new HttpRequest();
-            req.setHeader('Content-Encoding', 'UTF-8');
-            req.setHeader('Content-type', 'application/json');
-            body = json_string;
-            req.setBody(body);
-
-            if (SHASignature){
-                secretKey = global_variableMap.get('LMS.SecretKey').Value__c;
-                String ts = String.Valueof(dateTime.now().getTime()/1000);
-                System.debug('*****CalloutUtility.SendRequest.dateTime.now(): ' + dateTime.now());
-                System.debug('*****CalloutUtility.SendRequest.ts: ' + ts);
-
-              if (ServiceName.contains('AccountMergeIntegration')){
-                    timeOut = Integer.valueOf(global_variableMap.get('LMS.UserIntegration.TimeOut').Value__c);
-                    method = global_variableMap.get('LMS.UserIntegration.Method').Value__c;
-                    baseurl = String.format(global_variableMap.get('LMS.AccountMergeIntegration.Endpoint').Value__c, new String[]{ts});
-                    endPoint = global_variableMap.get('LMS.Server').Value__c + baseurl + '/' + generateHMACToken(baseurl);
-                }  
-                 
-            } else {
-                //Callouts not using SHASignature
-            }
-
-            req.setMethod(method);
-            req.setTimeout(timeOut);
-            req.setEndpoint(endpoint);
-
-            System.debug('*****CalloutUtility.SendRequest.baseurl: ' + baseurl);
-            System.debug('*****CalloutUtility.SendRequest.endpoint: ' + endpoint);
-            System.debug('*****CalloutUtility.SendRequest.body: ' + body);
-
-            Http http = new Http();
-            HTTPResponse res = http.send(req);
-			System.debug('*****CalloutUtility.SendRequest.res.getBody(): ' + res.getBody());
-            System.debug('*****CalloutUtility.SendRequest.res.getStatus(): ' + res.getStatus());
-            System.debug('*****CalloutUtility.SendRequest.res.getStatusCode(): ' + res.getStatusCode());
-            if(res.getStatus() == 'OK' && res.getStatusCode() == 200){
-                /** comment it out by Ray, no use case for current contact object */
-                /*
-                Contact cnt;
-                cnt = [select id, name,Merge_Status__c,Old_Contact_Id__c,Old_Contact_Username__c from contact where id=: masterIDmerge limit 1];
-                if(cnt != null){
-                    cnt.Merge_Status__c = true;
-                    cnt.Old_Contact_Id__c=cntIDmerge;
-                    cnt.Old_Contact_Username__c=usernamemerge;
-                    update cnt;
-                }
-                */
-                
-            }
-        
-        
-        }
-        catch(Exception ex){
-            /** comment it out by Ray, Utils class is need rebuild */
-            //Utils.LogException(ex);
-        }
-        
-    }
-    
-    
 
     //*** END - Async Callouts ***//
 
@@ -239,7 +173,7 @@ public class CalloutUtility {
         w.recordingViewTime = 100;
         w.status = 'Completed';
         w.score = 100;
-        w.parentLMSEnrollmentId = e[1].Id;
+        //w.parentLMSEnrollmentId = e[1].Id;
         w.lmsCourseId = '1/1';
         
         AsyncEnrollmentJSON w1 = new AsyncEnrollmentJSON();
